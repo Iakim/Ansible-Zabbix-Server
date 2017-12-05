@@ -1,0 +1,95 @@
+---
+- hosts: teste
+  remote_user: root
+
+  tasks:
+
+  - name: Parando o serviço do Firewall
+    service: name=firewalld state=stopped
+
+  - name: Desabilitando o serviço do Firewall
+    service: name=firewalld enabled=no
+
+  - selinux:
+      state: disabled
+
+  - name: Instalando o Banco de Dados
+    yum: state=latest name={{ item }}
+    with_items:
+    - mariadb
+    - mariadb-server
+    - MySQL-python
+
+  - name: Iniciando o Banco de Dados
+    service: name=mariadb state=started
+
+  - name: Instalando o Apache
+    yum: state=latest name={{ item }}
+    with_items:
+    - httpd
+    - httpd-devel
+
+  - name: Instalando o Zabbiz Server
+    yum: state=latest name={{ item }}
+    with_items:
+    - php
+    - php-cli
+    - php-common
+    - php-devel
+    - php-pear
+    - php-gd
+    - php-mbstring
+    - php-mysql
+    - php-xml
+    - zabbix-server-mysql
+    - zabbix-web-mysql
+    - zabbix-agent
+    - zabbix-java-gateway
+
+  - lineinfile:
+      path: /etc/zabbix/zabbix_server.conf
+      regexp: '^# DBPassword='
+      line: 'DBPassword=z@bb1x'
+
+  - lineinfile:
+      path: /etc/zabbix/zabbix_server.conf
+      regexp: '^# CacheSize=8M'
+      line: 'CacheSize=256M'
+
+  - lineinfile:
+      path: /etc/httpd/conf.d/zabbix.conf
+      regexp: '^        # php_value date.timezone Europe/Riga'
+      line: '        php_value date.timezone America/Sao_Paulo'
+
+  - name: Criando o Banco de Dados
+    shell: echo "create database zabbix character set utf8;" | mysql -u root
+
+  - name: Concedendo acesso ao Banco de Dados
+    shell: echo "grant all privileges on zabbix.* to 'zabbix'@'localhost' identified by 'z@bb1x';" | mysql -u root
+
+  - name: Criando Tabelas no Banco
+    shell: zcat /usr/share/doc/zabbix-server-mysql-3.0.10/create.sql.gz | mysql -uzabbix -pz@bb1x zabbix
+
+  - name: Iniciando o Zabbix-Server
+    service: name=zabbix-server state=started
+
+  - name: Iniciando o Apache
+    service: name=httpd state=started
+
+  - name: Realizando download do pacote mais recente
+    shell: wget http://repo.zabbix.com/zabbix/3.4/rhel/7/x86_64/zabbix-release-3.4-2.el7.noarch.rpm
+
+  - name: Instalando o pacote
+    shell: rpm -Uvh zabbix-release-3.*
+
+  - name: Limpando o Yum
+    shell: yum clean all
+
+  - name: Parando o Zabbix Server
+    service: name=zabbix-server state=stopped
+
+  - name: Atualizando pacotes
+    shell: yum update -y
+
+  - name: Iniciando o Zabbix Server
+    service: name=zabbix-server state=started
