@@ -45,6 +45,7 @@
     - zabbix-web-mysql
     - zabbix-agent
     - zabbix-java-gateway
+    - zabbix-get
 
   - lineinfile:
       path: /etc/zabbix/zabbix_server.conf
@@ -93,3 +94,6 @@
 
   - name: Iniciando o Zabbix Server
     service: name=zabbix-server state=started
+  
+  - name: Iniciando o Zabbix Agent
+    service: name=zabbix-agent state=started
