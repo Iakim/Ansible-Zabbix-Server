@@ -70,7 +70,10 @@
 
   - name: Criando Tabelas no Banco
     shell: zcat /usr/share/doc/zabbix-server-mysql-3.0.10/create.sql.gz | mysql -uzabbix -pz@bb1x zabbix
-
+  
+  - name: Iniciando o Zabbix-Agent
+    service: name=zabbix-agent state=started
+  
   - name: Iniciando o Zabbix-Server
     service: name=zabbix-server state=started
 
