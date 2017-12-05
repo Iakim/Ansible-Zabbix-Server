@@ -88,6 +88,9 @@
 
   - name: Parando o Zabbix Server
     service: name=zabbix-server state=stopped
+    
+  - name: Parando o Zabbix Agent
+    service: name=zabbix-agent state=stopped
 
   - name: Atualizando pacotes
     shell: yum update -y
