@@ -1,6 +1,6 @@
 # Ansible: Create a Zabbix Server
 
-### Please note the following details:
+### Please note the following detail:
 #### Local of timezone
        - lineinfile:
            path: /etc/httpd/conf.d/zabbix.conf
