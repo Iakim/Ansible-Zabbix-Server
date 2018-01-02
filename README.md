@@ -1,4 +1,4 @@
-# Ansible for install a Zabbix Server
+# Ansible playbook for install a Zabbix Server
 
 ### Please note the following detail:
 #### Local of timezone
