@@ -70,7 +70,7 @@
     shell: echo "grant all privileges on zabbix.* to 'zabbix'@'localhost' identified by 'z@bb1x';" | mysql -u root
 
   - name: Creating Tables in the Database
-    shell: zcat /usr/share/doc/zabbix-server-mysql-3.4.5/create.sql.gz | mysql -uzabbix -pz@bb1x zabbix
+    shell: zcat /usr/share/doc/zabbix-server-mysql-3.4.6/create.sql.gz | mysql -uzabbix -pz@bb1x zabbix
 
   - name: Starting Zabbix Server
     service: name=zabbix-server state=started enabled=yes
