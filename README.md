@@ -1,4 +1,4 @@
-[![PyPI version](https://img.shields.io/pypi/v/ansible.svg)](https://pypi.python.org/pypi/ansible/2.4.2.0) ZabbixVersion | 3.4.6
+[![PyPI version](https://img.shields.io/pypi/v/ansible.svg)](https://pypi.python.org/pypi/ansible/2.4.2.0) ZabbixVersion 3.4.6
 # Ansible playbook for install a Zabbix Server
 
 ### Please note the following detail:
@@ -15,4 +15,4 @@
          database name = zabbix
          password = z@bb1x
          
-- Visit https://www.zabbix.com/ for more details
+- Visit <a title="Zabbix" target="_blank" href="https://zabbix.com">Zabbix</a> for more details
